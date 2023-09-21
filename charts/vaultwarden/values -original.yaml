@@ -27,7 +27,7 @@ image:
 ## @param domain Domain name where the application is accessed
 ## Example: https://warden.contoso.com:8443
 ##
-domain: "https://vw.security.apse1.edme.be"
+domain: ""
 ## @param websocket.enabled Enable websocket notifications
 ## @param websocket.address Websocket listen address
 ## @param websocket.port Websocket listen port
@@ -69,7 +69,7 @@ adminToken:
   ## @param adminToken.value Plain string containing the admin token.
   ## Example: ADMIN_TOKEN
   ##
-  value: "$argon2id$v=19$m=65540,t=3,p=4$bVNQQ3ZRb1VLWHlSclZha0RTNXJxbldoSko5MVp4WlhzdnJkK0lkVGRyUT0$5TK7l9l6UazMav488E1aEfTfEfjM1n1Q8TWGrlgPt+g"
+  value: "R@ndomToken$tring"
 ## @param signupsAllowed By default, anyone who can access your instance can register for a new account.
 ## To disable this, set this parameter to false. Even when signupsAllowed=false, an existing user who is
 ## an organization owner or admin can still invite new users. If you want to disable this as well, set
@@ -77,7 +77,7 @@ adminToken:
 ## of any of the restrictions above
 ##
 ## If signupDomains is set, then the value of signupsAllowed is ignored
-signupsAllowed: false
+signupsAllowed: true
 ## @param invitationsAllowed Even when registration is disabled, organization administrators or owners can
 ## invite users to join organization. After they are invited, they can register with the invited email even
 ## if signupsAllowed is actually set to false. You can disable this functionality completely by setting
@@ -112,7 +112,7 @@ serviceAccount:
 ingress:
   ## @param ingress.enabled Deploy an ingress resource.
   ##
-  enabled: true
+  enabled: false
   ## @param ingress.class Ingress resource class
   ## The Ingress class to use, e. g. "nginx" for a nginx ingress controller or "alb" for a AWS LB controller.
   #
@@ -123,8 +123,7 @@ ingress:
   nginxIngressAnnotations: true
   ## @param ingress.additionalAnnotations Additional annotations for the ingress resource.
   ##
-  additionalAnnotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  additionalAnnotations: {}
   ## @param ingress.labels Additional labels for the ingress resource.
   ##
   labels: {}
@@ -133,7 +132,7 @@ ingress:
   tls: true
   ## @param ingress.hostname Hostname for the ingress.
   ##
-  hostname: "vw.security.apse1.edme.be"
+  hostname: "warden.contoso.com"
   ## @param ingress.path Default application path for the ingress
   ##
   path: "/"
@@ -155,9 +154,9 @@ ingress:
   ##
   nginxAllowList: ""
   ## TODO:
-##   - Add support for using cert-manager.
-##   - Support for multiple TLS hostnames.
-##
+  ##   - Add support for using cert-manager.
+  ##   - Support for multiple TLS hostnames.
+  ##
 
 ## Service configuration
 service:
@@ -177,25 +176,25 @@ database:
   ## @param database.type Database type, either mysql or postgresql
   ## Default is a sqlite database.
   ##
-  type: "mysql"
+  type: "default"
   ## @param database.host Database hostname or IP address
   ##
-  host: "10.209.57.238"
+  host: ""
   ## @param database.port Database port
   ## Default for MySQL is 3306, default for PostgreSQL is 5432
-  port: "3306"
+  port: ""
   ## @param database.username Database username
   ##
-  username: "vaultwarden"
+  username: ""
   ## @param database.password Database password
   ##
-  password: ".nLv$d8>/x6<"
+  password: ""
   ## @param database.dbName Database name
   ##
-  dbName: "vaultwarden"
+  dbName: ""
   ## @param database.uriOverride Manually specify the DB connection string
   ##
-  uriOverride: "mysql://vaultwarden:.nLv%24d8%3E%2Fx6%3C@10.209.57.238:3306/vaultwarden?unix_socket=/var/run/mysqld/mysqld.sock"
+  uriOverride: ""
   ## @param database.existingSecret Name of an existing secret containing the database URI
   ##
   existingSecret: ""
@@ -217,31 +216,31 @@ smtp:
   existingSecret: ""
   ## @param smtp.host SMTP host
   ##
-  host: "10.209.4.223"
+  host: ""
   ## @param smtp.security SMTP Encryption method
   ## Possible values:
   ##  - starttls: explicit TLS using ports 587 or 25
   ##  - force_tls: implicit TLS using port 465
   ##  - off: no encryption, using port 25, unless using STARTTLS
   ##
-  security: "off"
+  security: "starttls"
   ## @param smtp.port SMTP port
   ##
   port: 25
   ## @param smtp.from SMTP sender email address
   ## Example: juan.delacruz@gmail.com
   ##
-  from: "jesse@edmodoworld.com"
+  from: ""
   ## @param smtp.fromName SMTP sender FROM
   ##
-  fromName: "edw+security"
+  fromName: ""
   ## Username for SMTP authentication.
   ##
   username:
     ## @param smtp.username.value Username string for the SMTP authentication.
     ## Example: juan
     ##
-    value: "jesse@edmodoworld.com"
+    value: ""
     ## @param smtp.username.existingSecretKey When using an existing secret, specify the key which contains the username.
     ## Example: SMTP_USERNAME
     ##
@@ -252,7 +251,7 @@ smtp:
     ## @param smtp.password.value Password string for the SMTP authentication.
     ## Example: Sup3rsecurepa$$word
     ##
-    value: "ozqwnddsrytndkne"
+    value: ""
     ## @param smtp.password.existingSecretKey When using an existing secret, specify the key which contains the password.
     ## Example: SMTP_PASSWORD
     ##
@@ -270,20 +269,20 @@ smtp:
   acceptInvalidCerts: "false"
   ## @param smtp.debug SMTP debugging
   ##
-  debug: true
+  debug: false
 
 ## @section Storage Configuration
 ##
 storage:
   ## @param storage.enabled Enable configuration for persistent storage
   ##
-  enabled: true
+  enabled: false
   ## @param storage.size Storage size for /data
   ##
   size: "15Gi"
   ## @param storage.class Specify the storage class
   ##
-  class: "gp3"
+  class: "default"
   ## @param storage.dataDir Specify the data directory
   ##
   dataDir: "/data"
@@ -293,13 +292,13 @@ storage:
 logging:
   ## @param logging.enabled Enable logging to a file
   ##
-  enabled: true
+  enabled: false
   ## @param logging.logfile Specify logfile path for output log
   ##
   logfile: "/data/vaultwarden.log"
   ## @param logging.loglevel Specify the log level
   ##
-  loglevel: "debug"
+  loglevel: "warn"
 
 ## @section Extra containers Configuration
 ##
